@@ -1,0 +1,43 @@
+
+    [
+  {
+    "id": 1,
+    "name": "The Alchemist",
+    "author": "Paulo Coelho",
+    "genre": "Fiction",
+    "price": 399,
+    "publisher": "HarperCollins"
+  },
+  {
+    "id": 2,
+    "name": "Atomic Habits",
+    "author": "James Clear",
+    "genre": "Self-Help",
+    "price": 550,
+    "publisher": "Avery"
+  },
+  {
+    "id": 3,
+    "name": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": "Programming",
+    "price": 799,
+    "publisher": "Prentice Hall"
+  },
+  {
+    "id": 4,
+    "name": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "Fantasy",
+    "price": 499,
+    "publisher": "George Allen & Unwin"
+  },
+  {
+    "id": 5,
+    "name": "Rich Dad Poor Dad",
+    "author": "Robert T. Kiyosaki",
+    "genre": "Finance",
+    "price": 450,
+    "publisher": "Plata Publishing"
+  }
+]

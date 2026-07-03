@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "Devarshi",
+    "surname": "Patel",
+    "email": "devarshi.patel@example.com",
+    "issuedBook": "Atomic Habits",
+    "issuedDate": "2026-06-20",
+    "returnDate": "2026-07-20",
+    "subscriptionType": "Premium",
+    "subscriptionDate": "2026-01-15"
+  },
+  {
+    "id": 2,
+    "name": "Aarav",
+    "surname": "Shah",
+    "email": "aarav.shah@example.com",
+    "issuedBook": "The Alchemist",
+    "issuedDate": "2026-06-18",
+    "returnDate": "2026-07-18",
+    "subscriptionType": "Basic",
+    "subscriptionDate": "2026-03-10"
+  },
+  {
+    "id": 3,
+    "name": "Riya",
+    "surname": "Mehta",
+    "email": "riya.mehta@example.com",
+    "issuedBook": "The Hobbit",
+    "issuedDate": "2026-06-25",
+    "returnDate": "2026-07-25",
+    "subscriptionType": "Standard",
+    "subscriptionDate": "2026-02-05"
+  },
+  {
+    "id": 4,
+    "name": "Karan",
+    "surname": "Joshi",
+    "email": "karan.joshi@example.com",
+    "issuedBook": "Clean Code",
+    "issuedDate": "2026-06-15",
+    "returnDate": "2026-07-15",
+    "subscriptionType": "Premium",
+    "subscriptionDate": "2025-12-20"
+  },
+  {
+    "id": 5,
+    "name": "Ananya",
+    "surname": "Desai",
+    "email": "ananya.desai@example.com",
+    "issuedBook": "The Psychology of Money",
+    "issuedDate": "2026-06-28",
+    "returnDate": "2026-07-28",
+    "subscriptionType": "Basic",
+    "subscriptionDate": "2026-04-12"
+  }
+]
