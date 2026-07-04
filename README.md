@@ -33,14 +33,21 @@ GET : Get all issued books with fine
 
 ### Subsciption Types
 >> Basic( 3 months)
+
 >> Standard ( 6 months)
+
 >> Premium (12 months)
 
+
+
 >> If a user missed the renewal date, then user should be collected with 100rupee
+
 >> If a user misses his subscription, then user should pay 100 rupee
+
 >> If a user misses both renewal date and subscription then the collected amount is 200
 
-##commands
+## commands  
+
 npm init
 npm i express
 npm i nodemon --save-dev
