@@ -1,191 +1,221 @@
-const express= require("express")
-const users= require("../Data/users.json")
+const express = require("express");
+const { books } = require("../data/books.json");
+const {users} = require("../data/users.json");
+
+
+// const UserModel = require("../models/user.model");
+// const BookModel = require("../models/book.model");
+
+// const { UserModel, BookModel } = require("../models/index");
+const { UserModel, BookModel } = require("../Models/indexmodel");
+const { getAllBooks, getSingleBookById, getAllIssuedBooks, addNewBook, updateBookById, deleteBookById } = require("../controllers/book-controller");
 
 const router = express.Router();
 
-/*
-*Route: /users
-Method: GET
-Description: Get list of all the users in the system
-Access:Public
-Parametters:None
-*/
-router.get('/',(req,res)=>{
-    res.status(200).json({
-        success:true,
-        data:users
-    })
-})
-/*Route: /users/subscriptiondetails/:id
-Method: Put
-Description:Subscription details by id
-Access:Public
-Parametters:id
-*/
-router.get('/SubscriptionDetails/:id',(req,res)=>{
-    const id=Number(req.params.id)
-    const user=users.find((each)=>each.id===id);
-    if(!user){
-        return res.status(404).json({
-            success:false,
-            message:"No User Found"
-        })
-    }
-    const getDateInDays =(data = '')=>{
-        let date;
-        if(data){
-            date=new Date(data);
-        }else {
-            date=new Date(); 
-        }
-        let days=Math.floor(date/(1000*60*60*24));
-        return days;
-    }
-    const subscriptionType =(data)=>{
-        if(user.subscriptionType==="Basic"){
-            data=data+90;
-        }else if(user.subscriptionType==="Standard"){
-            data=data+180
-        }else if(user.subscriptionType==="Premium"){
-            data=data+365
-        }
-        return data;
-    }
-    let returnDate= getDateInDays(user.returnDate);
-    let currentDate=getDateInDays();
-    let subscriptionDate=getDateInDays(user.subscriptionDate);
-    let subscriptionExpiration=subscriptionType(subscriptionDate);
-    let fine = 0;
-if (returnDate<currentDate) {
-    fine+=100;
-}
-if (subscriptionExpiration<currentDate){
-    fine+=100;
-}
-    const data={
-        ...user,
-        subscriptionExpired:subscriptionExpiration<currentDate,
-        subscriptionDaysLeft: subscriptionExpiration-currentDate,
-        daysLeftForExpiration:returnDate-currentDate,
-        returnDate:returnDate<currentDate ? "Book Is Overdue" : returnDate,
-        fine: fine
-    }
-    res.status(200).json({
-        success: true,
-        data: data
-    })
-})
-/*
-*Route: /users/id
-Method: GET
-Description: Get a user by id in the system
-Access:Public
-Parametters:id
-*/
-router.get('/:id',(req,res)=>{
-    const id=Number(req.params.id);
-  const user= users.find((each)=>each.id===id)
-  if(!user){
-   return res.status(404).json({
-        success:false,
-        message:'User not found'
-    })
-  }
-    res.status(200).json({
-        success:true,
-        data:user
-    })
-})
-/*
-*Route: /users
-Method: Post
-Description: Register a new user in the system
-Access:Public
-Parametters:none
-*/
-router.post('/',(req,res)=>{
-    const {id,name,surname,email,subscriptionType,subscriptionDate}=req.body;
-    if(!id || !name || !surname || !email || !subscriptionType || !subscriptionDate){
-       return res.status(400).json({
-        success:false,
-        message:'All fields are required'
-       })
-    }
-    const user =users.find((each)=>each.id===id)
-    if(user){
-        return res.status(400).json({
-            success:false,
-            message:"User Already Exist"
-        })
-    }
-    users.push({
-        id,
-        name,
-        surname,
-        email,
-        subscriptionType,
-        subscriptionDate,
-    })
-    res.status(201).json({
-        success:true,
-        message: "User added successfully"
-    })
-})
-/*
-*Route: /users/:id
-Method: Put
-Description:Updating a user by id
-Access:Public
-Parametters:id
-*/
-router.put('/:id',(req,res)=>{
-  const id= Number(req.params.id);
-  const data=req.body
-  const user= users.find((each)=>each.id===id)
-    if(!user){
-   return res.status(404).json({
-        success: false,
-        message:"User Doesn't Exist"
-    })
-  }
-  //with spread operator  // spread operator copies the data of one array or object to other array or object
-const index = users.findIndex(each=>each.id===id);
 
-users[index]={
-    ...users[index], //copies the already existing data
-    ...data // overwrites the fields which is given by us in req.body
-};
+/**
+ * Route: /books
+ * Method: GET
+ * Decsription:  Get all the list of books in the system
+ * Access: Public
+ * Paramters: None
+ */
+// router.get('/',(req, res)=>{
+//     res.status(200).json({
+//         success: true,
+//         data: books
+//     })
+// })
 
-res.status(200).json({
-    success:true,
-    message:"User updated successfully",
-});
-
-})
-/*
-*Route: /users/:id
-Method: Put
-Description:Deleting a user by id
-Access:Public
-Parametters:id
-*/
-router.delete('/:id',(req,res)=>{
-    const id=Number(req.params.id)
-    const user=users.find((each)=>each.id===id)
-    if(!user){
-         return res.status(404).json({
-            success:false,
-            message:"User Not Found"
-         })
-    }
-    const index=users.findIndex((each)=>each.id===id);
-         users.splice(index,1) // as it is zero indexed 
-         res.status(200).json({
-            success:true,
-            message:"User Deleted Successfully"
-         })
-})
+router.get('/', getAllBooks)
 
 
+/**
+ * Route: /books/:id
+ * Method: GET
+ * Decsription:  Get a book by its ID
+ * Access: Public
+ * Paramters: id
+ */
+// router.get('/:id', (req, res)=> {
 
-module.exports = router;
+//     const {id} = req.params;
+//     const book = books.find((each)=>each.id === id)
+
+//     if(!book){
+//       return  res.status(404).json({
+//             success: false,
+//             message: `Book Not Found for id: ${id}`
+//         })
+//     }
+
+//     res.status(200).json({
+//         success: true,
+//         data: book
+//     })
+// })  
+router.get('/:id', getSingleBookById)  
+
+
+/**
+ * Route: /books
+ * Method: POST
+ * Decsription:  Create/Register a new book
+ * Access: Public
+ * Paramters: None
+ */ 
+// router.post('/', (req, res)=>{
+//     // req.body should have the following fields
+//     const {id, name, author, genre, price, publisher } = req.body;
+
+//     // Check if all the required fields are present
+//     if(!id || !name || !author || !genre || !price || !publisher){  
+//         return res.status(400).json({
+//             success: false,
+//             message: "Please provide all the required fields"
+//         })
+//     }
+
+//     // Check if the book already exists
+//     const book = books.find((each)=>each.id === id)
+//     if(book){
+//         return res.status(409).json({
+//             success: false,
+//             message: `Book Already Exists with id: ${id}` 
+//         })
+//     }
+
+//     // Add the new book to the books array
+//     books.push({id, name, author, genre, price, publisher});
+
+//     res.status(201).json({
+//         success: true,
+//         message: "Book added successfully",
+//         data: {id, name, author, genre, price, publisher}
+//     })          
+// })
+router.post('/', addNewBook);
+
+
+/**
+ * Route: /books/:id
+ * Method: PUT
+ * Decsription:  Update a book by its ID
+ * Access: Public
+ * Paramters: id
+ */
+// router.put('/:id', (req, res)=> {
+//     const {id} = req.params;
+//     const {data} = req.body;
+    
+//     // if(!data || Object.keys(data).length === 0){
+//     //     return res.status(400).json({
+//     //         success: false,
+//     //         message: "Please provide the data to update"
+//     //     })
+//     // }
+
+//     // Check if the book exists
+//     const book = books.find((each)=>each.id === id)
+//    if(!book){
+//        return res.status(404).json({
+//            success: false,
+//            message: `Book Not Found for id: ${id}`
+//        })
+//    }
+
+//    // Update the book details
+// //    Object.assign(book, data);
+
+// const updatedBook = books.map((each) => {
+//    if (each.id === id) {
+//        return {...each, ...data};
+//    }
+//    return each;
+// });     
+
+//    res.status(200).json({
+//        success: true,
+//        message: "Book Updated Successfully",
+//        data: updatedBook
+//    })
+// })
+
+router.put('/:id', updateBookById);
+
+/**
+ * Route: /books/:id
+ * Method: DELETE
+ * Decsription:  Delete a book by its ID
+ * Access: Public
+ * Paramters: id
+ */
+// router.delete('/:id', (req, res)=> {
+//     const {id} = req.params;
+
+//     // Check if the book exists
+//     const book = books.find((each)=>each.id === id)
+//     if(!book){
+//         return res.status(404).json({
+//             success: false,
+//             message: `Book Not Found for id: ${id}`
+//         })
+//     }
+
+//     // Delete the book from the books array
+//     const updatedBooks = books.filter((each)=>each.id !== id);
+
+//     res.status(200).json({
+//         success: true,
+//         message: "Book Deleted Successfully",
+//         data: updatedBooks
+//     })
+// })
+
+router.delete('/:id', deleteBookById);
+
+
+/**
+ * Route: /books/issued/for-users
+ * Method: GET
+ * Decsription:  Get all issued books
+ * Access: Public
+ * Paramters: None
+ */
+// router.get('/issued/for-users', (req, res) => {
+//     // const issuedBooks = books.filter((each) => each.issued === true);
+
+//     const usersWithIssuedBooks = users.filter((each)=>{
+//         if(each.issuedBook) {
+//             return each;
+//         }
+//     })
+
+//     const issuedBooks = [];
+  
+//     usersWithIssuedBooks.forEach((each)=>{
+//         const book = books.find((book)=> book.id ===each.issuedBook);
+
+//         book.issuedBy = each.name;
+//         book.issuedDate = each.issuedDate;
+//         book.returnDate = each.returnDate;
+
+//         issuedBooks.push(book)
+//     })
+
+//     if(!issuedBooks === 0){
+//         return res.status(404).json({
+//             success: false,
+//             message: "No Books issued yet"
+//         })
+//     }
+
+//     res.status(200).json({
+//         success: true,
+//         data: issuedBooks
+//     });
+// });
+
+router.get('/issued/for-users', getAllIssuedBooks);
+
+module.exports = router; 

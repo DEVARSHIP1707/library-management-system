@@ -1,9 +1,16 @@
 const express = require('express')
+const dotenv= require('dotenv')
+ dotenv.config();
 const app= express()
 const port=5173
+//import databse connection file
+const DbConnection = require('./databaseConnectionfile')
+console.log(process.env.MONGO_URI);
+DbConnection();
 app.use(express.json())
  const usersRouter=require("./Routes/users");
  const booksRouter=require("./Routes/books");
+
 app.get('/',(req,res)=>{
     res.status(200).send('Welcome to Library Management System')
 })
